@@ -125,14 +125,35 @@ trafficRecordsArray.forEach((record) => {
 });
 
 /**
- * TASK: 6. Write the records to a csv file
+ * TASK: 6. Split each record into two records, one for AM and one for PM
  */
 
-await Deno.writeTextFile('../01-traffic.csv', toCsv(trafficRecordsArray, {
+const trafficRecordsArraySplit = trafficRecordsArray.flatMap((record) => {
+    return [
+        {
+            ...record,
+            meridiem: 'AM',
+            volume: record['AM'],
+        },
+        {
+            ...record,
+            meridiem: 'PM',
+            volume: record['PM'],
+        }
+    ];
+});
+
+/**
+ * TASK: 7. Write the records to a csv file
+ */
+
+await Deno.writeTextFile('../01-traffic.csv', toCsv(trafficRecordsArraySplit, {
     columns: [
-        'Roadway Name',
         'Date',
-        'AM',
-        'PM',
+        'meridiem',
+        'Roadway Name',
+        'volume',
+        // 'AM',
+        // 'PM',
     ]
 }));
