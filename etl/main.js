@@ -16,42 +16,52 @@ const b1 = multibar.create(records.length, 0, {
     task: 'merging records',
 });
 
-const weatherHistory = [];
+const weatherHistory = {};
 
 records.forEach((record) => {
-    // get the date and ignore the timezones
-    const dateTime = new Date(record['Formatted Date'].split('+')[0]);
+    // datetime: 2006-04-01 00:00:00.000 +0200
 
-    // const date = dateTime.toISOString().split('T')[0];
-    const date = `${dateTime.getFullYear()}-${dateTime.getMonth() + 1}-${dateTime.getDate()}`;
-    const meridiem = dateTime.getHours() >= 12 ? 'PM' : 'AM';
+    // get the first 10 characters of the 'Formatted Date' property
+    const date = record['Formatted Date'].slice(0, 10);
 
-    b1.increment();
+    // get the next 2 characters after a space of the 'Formatted Date' property
+    const meridiem = record['Formatted Date'].slice(11, 13) >= 12 ? 'PM' : 'AM';
+
     b1.update({ task: `merging records: ${date} ${meridiem}` });
+    b1.increment();
     b1.render();
 
-    // check if the date and meridiem exists in the weatherHistory
-    const dateIndex = weatherHistory.findIndex((item) => new Date(item.date).toISOString().split('T')[0] === date && item.meridiem === meridiem);
-
-    // if the date and meridiem exists, add the record to the records array
-    if (dateIndex !== -1) {
-        weatherHistory[dateIndex].records.push(record);
+    // find the property in the weatherHistory object named `${date}_${meridiem}`
+    const key = `${date}_${meridiem}`;
+    if (weatherHistory[key]) {
+        weatherHistory[key].records.push(record);
     } else {
-        // if the date and meridiem doesn't exist, create a new object
-        weatherHistory.push({
+        weatherHistory[key] = {
             date,
             meridiem,
             records: [record],
-        });
+        };
     }
 });
 
-const b2 = multibar.create(weatherHistory.length, 0, {
+// convert the weatherHistory object to an array
+const weatherHistoryArray = Object.values(weatherHistory);
+
+const b2 = multibar.create(weatherHistoryArray.length, 0, {
     task: 'transforming records',
 });
 
+// sort the weatherHistoryArray by date and meridiem
+weatherHistoryArray.sort((a, b) => {
+    if (a.date === b.date) {
+        return a.meridiem === 'AM' ? -1 : 1;
+    }
+
+    return a.date < b.date ? -1 : 1;
+});
+
 // on each record property, create a new object and set it to 'weather' property. the object is the mean/average from the records array
-weatherHistory.forEach((item) => {
+weatherHistoryArray.forEach((item) => {
     const weather = {};
 
     // Precip Type, Temperature, Humidity, Wind Speed
@@ -81,12 +91,13 @@ weatherHistory.forEach((item) => {
 
     item.weather = weather;
 
-    // b2.update(b2.getProgress() + 1, { filename: `transformed records: ${item.date} ${item.meridiem}` });
-    b2.increment(null, { task: `transformed records: ${item.date} ${item.meridiem}` });
+    b2.update({ task: `transformed records: ${item.date} ${item.meridiem}` });
+    b2.increment();
+    b1.render();
 });
 
 // write the weatherHistory to a csv file
-const weatherHistoryCsv = weatherHistory.map((item) => {
+const weatherHistoryCsv = weatherHistoryArray.map((item) => {
     return {
         date: item.date,
         meridiem: item.meridiem,
