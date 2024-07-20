@@ -149,11 +149,15 @@ const trafficRecordsArraySplit = trafficRecordsArray.flatMap((record) => {
 
 await Deno.writeTextFile('../01-traffic.csv', toCsv(trafficRecordsArraySplit, {
     columns: [
-        'Date',
+        {
+            header: 'date',
+            prop: 'Date',
+        },
         'meridiem',
-        'Roadway Name',
+        {
+            header: 'roadway name',
+            prop: 'Roadway Name',
+        },
         'volume',
-        // 'AM',
-        // 'PM',
     ]
 }));

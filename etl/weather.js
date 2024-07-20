@@ -106,19 +106,19 @@ await Deno.writeTextFile('../01-weather.csv', toCsv(weatherHistoryArray, {
         'date',
         'meridiem',
         {
-            header: 'Precip Type',
+            header: 'precip type',
             prop: ['weather', 'Precip Type'],
         },
         {
-            header: 'Temperature',
+            header: 'temperature',
             prop: ['weather', 'Temperature'],
         },
         {
-            header: 'Humidity',
+            header: 'humidity',
             prop: ['weather', 'Humidity'],
         },
         {
-            header: 'Wind Speed',
+            header: 'wind speed',
             prop: ['weather', 'Wind Speed'],
         },
     ]
