@@ -2,3 +2,6 @@ testing.xlsx
 weatherHistory.csv
 ~$testing.xlsx
 Traffic_Volume_Counts_20240710.csv
+
+.DS_Store
+node_modules
