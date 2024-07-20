@@ -21,11 +21,13 @@ const weatherRecords = parseCsv(csvWeatherFile, {
 });
 
 /**
- * TASK: 1. Left join traffic <- weather. Merge the records by date
+ * TASK: 1. inner join traffic <--> weather. Merge the records by date
  */
 
+const trafficWeatherRecords = [];
+
 // loop through the traffic records
-trafficRecords.forEach((trafficRecord, index) => {
+trafficRecords.forEach((trafficRecord) => {
     // find the weather record with the same date and meridiem
     const weather = weatherRecords.find((weatherRecord) => {
         return weatherRecord['date'] === trafficRecord['date'] && weatherRecord['meridiem'] === trafficRecord['meridiem'];
@@ -33,18 +35,18 @@ trafficRecords.forEach((trafficRecord, index) => {
 
     // if the weather record exists, merge the weather record to the traffic record
     if (weather) {
-        trafficRecords[index] = {
+        trafficWeatherRecords.push({
             ...trafficRecord,
             ...weather,
-        };
-    }    
+        });
+    }
 });
 
 /**
  * TASK: 2. Write the records to a csv file
  */
 
-await Deno.writeTextFile('../02-traffic-weather.csv', toCsv(trafficRecords, {
+await Deno.writeTextFile('../02-traffic-weather.csv', toCsv(trafficWeatherRecords, {
     columns: [
         'date',
         'meridiem',
