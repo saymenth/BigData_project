@@ -65,7 +65,7 @@ weatherHistoryArray.sort((a, b) => {
  * TASK: 3. Calculate the mean/average from the records array of each group
  */
 
-weatherHistoryArray.forEach((item, index) => {
+weatherHistoryArray.forEach((item) => {
     // get the most common Precip Type
     const precipType = item.records.reduce((acc, record) => {
         // If Some records have 'Precip Type' as 'null', define it based on the 'Summary' property
