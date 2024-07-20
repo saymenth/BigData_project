@@ -1,0 +1,26 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "jsr:@std/csv@^0.224.3": "jsr:@std/csv@0.224.3",
+      "jsr:@std/streams@^0.224.4": "jsr:@std/streams@0.224.5"
+    },
+    "jsr": {
+      "@std/csv@0.224.3": {
+        "integrity": "cf9cb88954a029b9997a613f67771d39b4d1602c8ea1a289328c89b48460fae3",
+        "dependencies": [
+          "jsr:@std/streams@^0.224.4"
+        ]
+      },
+      "@std/streams@0.224.5": {
+        "integrity": "bcde7818dd5460d474cdbd674b15f6638b9cd73cd64e52bd852fba2bd4d8ec91"
+      }
+    }
+  },
+  "remote": {},
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/csv@^0.224.3"
+    ]
+  }
+}

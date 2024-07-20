@@ -1,0 +1,22 @@
+{
+  "version": "3",
+  "redirects": {
+    "https://esm.sh/csv": "https://esm.sh/csv@6.3.9"
+  },
+  "remote": {
+    "https://esm.sh/csv@6.3.9": "d3b8788d7391855dad07d2a0702fd1a5ce556bea18e1f64eeac6b68ed92315a9",
+    "https://esm.sh/v135/csv-generate@4.4.1/denonext/csv-generate.mjs": "0653a7e271527d7ad17bc57062317ad7147c3eec96d271a8306a77498fe6d8ff",
+    "https://esm.sh/v135/csv-parse@5.5.6/denonext/csv-parse.mjs": "2b508fff4cc75b0a5e5c8a2b70fbe0af94c5ccb5be9d40f2bb5d3552dd8ba655",
+    "https://esm.sh/v135/csv-stringify@6.5.0/denonext/csv-stringify.mjs": "f53a9429ffdd7c801a6e09c6359ccad1107b1d87f32133955b32b6363d259e7b",
+    "https://esm.sh/v135/csv@6.3.9/denonext/csv.mjs": "f46a97cd6ab5c4c8613e4a1a0de05d8c2536fcff4c680b00dfcc585fad2d2da5",
+    "https://esm.sh/v135/stream-transform@3.3.2/denonext/stream-transform.mjs": "198359b63e75e514ce7d0aa8f2bcea3b96b9fa99659650a565d642e53649c47f"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:cli-progress@^3.12.0",
+        "npm:csv@^6.3.9"
+      ]
+    }
+  }
+}
