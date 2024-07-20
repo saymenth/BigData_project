@@ -2,12 +2,15 @@ import { parse } from 'csv';
 import fs from 'fs';
 import cliProgress from 'cli-progress';
 
+// create a progress bar on terminal
 const multibar = new cliProgress.MultiBar({
     format: '[{bar}] {percentage}% | ETA: {eta}s | {value}/{total} | Task: {task}',
 }, cliProgress.Presets.shades_grey);
 
+// read the csv file
 const csvFile = fs.readFileSync('../fillnull_weather.csv', 'utf8');
 
+// parse the csv file
 const records = await parse(csvFile, {
     columns: true,
 }).toArray();
@@ -16,8 +19,10 @@ const b1 = multibar.create(records.length, 0, {
     task: 'merging records',
 });
 
+// create an object to store the weather history records that will be grouped by date and meridiem
 const weatherHistory = {};
 
+// on each record, group the records by date and meridiem
 records.forEach((record) => {
     // datetime: 2006-04-01 00:00:00.000 +0200
 
@@ -31,7 +36,7 @@ records.forEach((record) => {
     b1.increment();
     b1.render();
 
-    // find the property in the weatherHistory object named `${date}_${meridiem}`
+    // find the property in the weatherHistory object named `${date}_${meridiem}`, if it exists, push the record to the 'records' array
     const key = `${date}_${meridiem}`;
     if (weatherHistory[key]) {
         weatherHistory[key].records.push(record);
@@ -108,13 +113,15 @@ const weatherHistoryCsv = weatherHistoryArray.map((item) => {
     };
 });
 
+// create a buffer string from the weatherHistoryCsv array and join it with a newline character '\n' which will be written to the csv file
 const weatherHistoryCsvString = weatherHistoryCsv.map((item) => {
     return `${item.date},${item.meridiem},${item['Precip Type']},${item['Temperature']},${item['Humidity']},${item['Wind Speed']}`;
 }).join('\n');
 
-// add the header
+// the csv header
 const header = 'date,meridiem,Precip Type,Temperature,Humidity,Wind Speed\n';
 
+// write the csv file
 fs.writeFileSync('../weatherHistoryTransformed.csv', header + weatherHistoryCsvString);
 
 multibar.stop();
