@@ -3,5 +3,7 @@ weatherHistory.csv
 ~$testing.xlsx
 Traffic_Volume_Counts_20240710.csv
 
+.idea/
+
 .DS_Store
 node_modules
